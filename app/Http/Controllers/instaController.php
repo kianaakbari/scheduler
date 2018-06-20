@@ -101,11 +101,14 @@ class instaController extends Controller
 
             elseif ($timeInterval > 23){
                 $media = $result->data;
+
+                $this->isOwnerTagged($media[1],"@k.i.a.n.a.a.k");
+
                 foreach ($media as $medium) {
-                    $timeInterval = round(($medium->created_time - strtotime($suspendedReservation->time))/3600, 1);
+                    $mediumTime = round(($medium->created_time - strtotime($suspendedReservation->time))/3600, 1);
                     $owner_username = $suspendedReservation->business_instagram_username;
-                    //dd(date("Y-m-d h:i:sa", $date));
-                    if($timeInterval > 23){
+                    if($mediumTime > 23){
+//                      TODO check if influencer posted this post after reservation time
                         if ($this->isOwnerTagged($medium, $owner_username)) {
                             $suspendedReservation->delete();
                             break;
@@ -130,7 +133,6 @@ class instaController extends Controller
         $captionWords = preg_split('/\s+/', $caption);
         foreach ($captionWords as $captionWord){
             if (preg_match('/^@(.)+/',$captionWord) && !in_array($captionWord, $captionTaggedUsers)){
-                echo($captionWord."<br>");
                 $captionTaggedUsers[] = $captionWord;
             }
         }
@@ -176,7 +178,7 @@ class instaController extends Controller
 
         //niloofar approach:
 
-        return (in_array($owner_username, $photoTaggedUsers) || in_array($owner_username, $captionTaggedUsers));
+        return (in_array($owner_username, $photoTaggedUsers) || in_array("@".$owner_username, $captionTaggedUsers));
     }
 
     public function test(){
