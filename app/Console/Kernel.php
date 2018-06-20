@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+//        'App\Http\Controllers\instaController@test',
     ];
 
     /**
@@ -26,6 +26,25 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+
+//        $schedule->call('App\Http\Controllers\instaController@test')->everyMinute();
+
+        $schedule->call(function(){
+//            app('App\Http\Controllers\instaController')->test();
+//            return app('App\Http\Controllers\instaController')->test();
+//            syslog(1, 'test');
+            $myfile = fopen("newfile.txt", "a");
+            $txt = "John Doe\n";
+            fwrite($myfile, $txt);
+            fclose($myfile);
+        })->everyMinute();
+
+//        $schedule->call('inspire')
+//            ->hourly()->dailyAt('23:30');
+
+//        ->withoutOverlapping();
+//        ->daily();
+//        ->twiceDaily(1, 13);
     }
 
     /**
