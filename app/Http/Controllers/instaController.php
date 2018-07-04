@@ -101,9 +101,6 @@ class instaController extends Controller
 
             elseif ($timeInterval > 23){
                 $media = $result->data;
-
-                $this->isOwnerTagged($media[1],"@k.i.a.n.a.a.k");
-
                 foreach ($media as $medium) {
                     $mediumTime = round(($medium->created_time - strtotime($suspendedReservation->time))/3600, 1);
                     $owner_username = $suspendedReservation->business_instagram_username;
